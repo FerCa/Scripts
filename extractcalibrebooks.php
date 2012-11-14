@@ -13,9 +13,14 @@ function copyFiles($calibreDirectory, $targetDirectory) {
 		{
 			copyFiles($fileinfo->getPathname(), $targetDirectory);
 		} else if ($fileinfo->isFile() && (!in_array($fileinfo->getFilename(), $ignoreFiles)))
-		{	
-			echo 'COPIYNG FILE: ' . $fileinfo->getPathname() . PHP_EOL;
-			copy($fileinfo->getPathname(), $targetDirectory . $fileinfo->getFilename());
+		{
+			if (file_exists($targetDirectory . '/' . $fileinfo->getFilename())) {
+				echo 'SKIPPING FILE: ' . $fileinfo->getPathname() . ' (already exist)' . PHP_EOL;
+			}else {
+				echo 'COPIYNG FILE: ' . $fileinfo->getPathname() . PHP_EOL;
+				echo $fileinfo->getPathname().' , '. $targetDirectory . '/'  . $fileinfo->getFilename();
+				copy($fileinfo->getPathname(), $targetDirectory . '/'  . $fileinfo->getFilename());
+			}
 		}
 	}
 }
